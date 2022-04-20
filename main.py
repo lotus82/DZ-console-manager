@@ -1,3 +1,6 @@
+import os
+import shutil
+
 IS_ACTIVE = True
 menu_dict = {
     '1':'Создать папку',
@@ -14,7 +17,7 @@ menu_dict = {
     '12':'Выход'
 }
 
-
+# Вывод главного меню
 def main_menu():
     print("="*40 + "МЕНЮ" + "="*40)
     count = 1
@@ -31,11 +34,35 @@ def main_menu():
 
 # Создать папку
 def create_folder():
-    pass
+    try:
+        dir_name = input("Введите имя папки: ")
+        os.mkdir(dir_name)
+    except OSError as err:
+        print("Ошибка создания директории: %s" % dir_name, ":", err)
+    else:
+        print("-" * 84 + "\nСоздана директория: %s " % dir_name + "\n" + "-"*84)
 
 # Удалить (файл/папку)
 def del_folder():
-    pass
+    path = input("Введите имя папки или файла: ")
+    if os.path.exists(path):
+        if os.path.isfile(path):
+            try:
+                os.remove(path)
+                print("-" * 84 + "\nУдален файл: %s " % path + "\n" + "-" * 84)
+            except Exception as err:
+                print("Ошибка удаления файла: %s" % path, ":", err)
+        else:
+            try:
+                if input("Удалить папку вместе со всем содержимым, да?") in ["да", "Да", "ДА", "yes", "Yes", "YES", "y", "Y", "ok", "Ok", "OK", "д", "Д"]:
+                    shutil.rmtree(path)
+                    print("-" * 84 + "\nУдалена папка: %s " % path + " со всем ее содержимым\n" + "-" * 84)
+                else:
+                    print("-" * 84 + "\nУдаление отменено\n" + "-" * 84)
+            except Exception as err:
+                print("Ошибка удаления папки: %s" % path, ":", err)
+    else:
+        print("-" * 84 + "\nТакого файла или папки здесь нет: %s " % path + "\n" + "-" * 84)
 
 # Копировать (файл/папку)
 def copy_file():
@@ -78,7 +105,9 @@ def close_app():
     global IS_ACTIVE
     IS_ACTIVE = False
 
-if __name__ == "__main__":
+# Запуск приложения
+def run_app():
+    global  IS_ACTIVE
     while IS_ACTIVE:
         main_menu()
         choice = input('Выберите пункт меню: ')
@@ -110,3 +139,6 @@ if __name__ == "__main__":
             print('Неверный пункт меню')
     print("До свидания")
     exit()
+
+if __name__ == "__main__":
+    run_app()
