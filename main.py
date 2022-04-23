@@ -26,90 +26,82 @@ menu_dict = {
 }
 
 # Вывод главного меню
-def main_menu():
-    print("="*40 + "МЕНЮ" + "="*40)
+def main_menu(menu_dict):
     count = 1
-    s = ""
+    s_menu = ""
     for k,v in menu_dict.items():
         if count % 2 == 0:
-            s = s + k.rjust(2, " ") + " - " + v.ljust(39, " ") + " || "
-            print(s)
-            s = ""
+            s_menu = s_menu + k.rjust(2, " ") + " - " + v.ljust(39, " ") + " ||\n"
         else:
-            s = s + "|| " + k.rjust(2, " ") + " - " + v.ljust(25, " ") + " || "
+            s_menu = s_menu + "|| " + k.rjust(2, " ") + " - " + v.ljust(25, " ") + " || "
         count+=1
-    print("=" * 84)
+    return "="*40 + "МЕНЮ" + "="*40 + "\n" + s_menu + "=" * 84
 
 # 1 - Создать папку
-def create_folder():
+def create_folder(dir_name):
     try:
-        dir_name = input("Введите имя папки: ")
         os.mkdir(dir_name)
     except OSError as err:
-        print("Ошибка создания директории: %s" % dir_name, ":", err)
+        return("Ошибка создания директории: %s" % dir_name, ":", err)
     else:
-        print("-" * 84 + "\nСоздана директория: %s " % dir_name + "\n" + "-"*84)
+        return("-" * 84 + "\nСоздана директория: %s " % dir_name + "\n" + "-"*84)
 
 # 2 - Удалить (файл/папку)
-def del_folder():
-    path = input("Введите имя папки или файла: ")
+def del_folder(path):
     if os.path.exists(path):
         if os.path.isfile(path):
             try:
                 os.remove(path)
-                print("-" * 84 + "\nУдален файл: %s " % path + "\n" + "-" * 84)
+                return("-" * 84 + "\nУдален файл: %s " % path + "\n" + "-" * 84)
             except Exception as err:
-                print("Ошибка удаления файла: %s" % path, ":", err)
+                return("Ошибка удаления файла: %s" % path, ":", err)
         else:
             try:
                 if input("Удалить папку вместе со всем содержимым, да?") in ["да", "Да", "ДА", "yes", "Yes", "YES", "y", "Y", "ok", "Ok", "OK", "д", "Д"]:
                     shutil.rmtree(path)
-                    print("-" * 84 + "\nУдалена папка: %s " % path + " со всем ее содержимым\n" + "-" * 84)
+                    return("-" * 84 + "\nУдалена папка: %s " % path + " со всем ее содержимым\n" + "-" * 84)
                 else:
-                    print("-" * 84 + "\nУдаление отменено\n" + "-" * 84)
+                    return("-" * 84 + "\nУдаление отменено\n" + "-" * 84)
             except Exception as err:
-                print("Ошибка удаления папки: %s" % path, ":", err)
+                return("Ошибка удаления папки: %s" % path, ":", err)
     else:
-        print("-" * 84 + "\nТакого файла или папки здесь нет: %s " % path + "\n" + "-" * 84)
+        return("-" * 84 + "\nТакого файла или папки здесь нет: %s " % path + "\n" + "-" * 84)
 
 # 3 - Копировать (файл/папку)
-def copy_file():
-    inp = input("Введите что копировать: ")
-    outp = input("Введите куда копировать: ")
+def copy_file(inp, outp):
     if os.path.exists(inp):
         if os.path.isfile(inp):
             try:
                 shutil.copyfile(inp, outp)
-                print("-" * 84 + "\nСкопирован файл: %s " % inp + " в: %s " % outp + "\n" + "-" * 84)
+                return("-" * 84 + "\nСкопирован файл: %s " % inp + " в: %s " % outp + "\n" + "-" * 84)
             except Exception as err:
-                print("Ошибка копирования файла: %s " % inp + " в: %s " % outp, ":", err)
+                return("Ошибка копирования файла: %s " % inp + " в: %s " % outp, ":", err)
         else:
             try:
                 shutil.copytree(inp, outp)
-                print("-" * 84 + "\nСкопирована папка: %s " % inp + " в: %s " % outp + "\n" + "-" * 84)
+                return("-" * 84 + "\nСкопирована папка: %s " % inp + " в: %s " % outp + "\n" + "-" * 84)
             except Exception as err:
-                print("Ошибка копирования папки: %s " % inp + " в %s " % outp, ":", err)
+                return("Ошибка копирования папки: %s " % inp + " в %s " % outp, ":", err)
     else:
-        print("-" * 84 + "\nТакого файла или папки здесь нет: %s " % inp + "\n" + "-" * 84)
+        return("-" * 84 + "\nТакого файла или папки здесь нет: %s " % inp + "\n" + "-" * 84)
 
 # 4,5,6 - Просмотр содержимого рабочей директории
 def list_path(param="all"):
-    global CUR_DIR
     try:
         content = os.listdir(CUR_DIR)
-        print("-" * 84)
+        s = ""
         for item in content:
             if param == "files":
                 if os.path.isfile(os.path.join(CUR_DIR,item)):
-                    print(item)
+                    s += item + "\n"
             if param == "folders":
                 if not os.path.isfile(os.path.join(CUR_DIR,item)):
-                    print(item)
+                    s += item + "\n"
             if param == "all":
-                print(item)
-        print("-" * 84)
+                s += item + "\n"
+        return ("-" * 84 + "\n" + s + "-" * 84)
     except Exception as err:
-        print("Ошибка просмотра содержимого рабочей директории: %s " % CUR_DIR, ":", err)
+        return("Ошибка просмотра содержимого рабочей директории: %s " % CUR_DIR, ":", err)
 
 # 7 - Просмотр информации об ОС
 def info_os():
@@ -120,19 +112,16 @@ def info_os():
             "MAC адрес" : get_mac(),
             "Название операционной системы" : platform.uname()
         }
-        print("-" * 84 )
+        s = "-" * 84 + "\n"
         for k,v in info_dict.items():
-            print(k + " --> ", v)
-        print("-" * 84)
+            s += k + " --> " + v + "\n"
+        return(s + "-" * 84)
     except Exception as err:
-        print("Ошибка получения информации: ", err)
+        return("Ошибка получения информации: ", err)
 
 # 8 - Создатель программы
-def info_owner():
-    global OWNER
-    print("-" * 84)
-    print("Создатель программы: ", OWNER)
-    print("-" * 84)
+def info_owner(OWNER):
+    return("-" * 84 + "\nСоздатель программы: " + OWNER + "-" * 84)
 
 # 9 - Играть в викторину
 def game():
@@ -143,14 +132,14 @@ def bank():
     b.start_bank()
 
 # 11 - Смена рабочей директории
-def change_path():
+def change_path(new_path):
     global CUR_DIR
-    new_path = input("Сменить рабочую директорию. Введите новый путь: ")
     try:
         os.chdir(new_path)
         CUR_DIR = new_path
+        return "Рабочая директория сменена на: " + new_path
     except Exception as err:
-        print("Ошибка смены рабочей директории на : %s" % new_path, ":", err)
+        return "Ошибка смены рабочей директории на : %s" % new_path + ":" + err
 
 # 12 - Выход
 def close_app():
@@ -159,32 +148,31 @@ def close_app():
 
 # Запуск приложения
 def run_app():
-    global  IS_ACTIVE
     while IS_ACTIVE:
-        main_menu()
+        print(main_menu(menu_dict))
         choice = input('Выберите пункт меню: ')
         if choice == '1':
-            create_folder()
+            print(create_folder(input("Введите имя папки: ")))
         elif choice == '2':
-            del_folder()
+            print(del_folder(input("Введите имя папки или файла: ")))
         elif choice == '3':
-            copy_file()
+            print(copy_file(input("Введите что копировать: "), input("Введите куда копировать: ")))
         elif choice == '4':
-            list_path()
+            print(list_path())
         elif choice == '5':
-            list_path("folders")
+            print(list_path("folders"))
         elif choice == '6':
-            list_path("files")
+            print(list_path("files"))
         elif choice == '7':
-            info_os()
+            print(info_os())
         elif choice == '8':
-            info_owner()
+            print(info_owner(OWNER))
         elif choice == '9':
             game()
         elif choice == '10':
             bank()
         elif choice == '11':
-            change_path()
+            print(change_path(input("Сменить рабочую директорию (" + CUR_DIR + "). Введите новый путь: ")))
         elif choice == '12':
             close_app()
         else:
