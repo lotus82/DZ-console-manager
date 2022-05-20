@@ -40,7 +40,7 @@ def main_menu():
         count+=1
     print("=" * 84)
 
-# 1 - Создать папку
+# 1 - Создать  папку
 def create_folder():
     try:
         dir_name = input("Введите имя папки: ")
