@@ -98,10 +98,10 @@ def copy_file():
 
 # 5 - Сохранение содержимого рабочей директории в файл
 def save_list_dir():
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'listdir.txt')
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'listdirectory.txt')
     lst = os.listdir(CUR_DIR)
     if uploader.save_listdir(path, lst, CUR_DIR):
-        print('Успешное сохранение содержимого рабочей директории в listdir.txt')
+        print('Успешное сохранение содержимого рабочей директории в listdirectory.txt')
 
 # 4,6,7 - Просмотр содержимого рабочей директории
 def list_path(param="all"):

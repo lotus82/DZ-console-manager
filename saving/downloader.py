@@ -6,7 +6,6 @@ def read_csv(path):
         history = []
         with open(path, encoding='utf-8') as r_file:
             file_reader = csv.reader(r_file, delimiter=",")
-            count = 0
             for row in file_reader:
                 history.append({row[0]: row[1]})
     else:

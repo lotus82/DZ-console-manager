@@ -1,8 +1,7 @@
 import csv
 import os.path
-import pickle
 
-
+# сохранение истории покупок в файл
 def save_history(path, history_dict):
     try:
         with open(path, mode="w", encoding='utf-8') as w_file:
@@ -13,6 +12,7 @@ def save_history(path, history_dict):
     except Exception as err:
         print('[ERROR]: ошибка сохранения истории покупок: ', err)
 
+# сохранение счета в файл
 def save_score(path, score):
     try:
         with open(path, mode="w", encoding='utf-8') as w_file:
@@ -20,7 +20,7 @@ def save_score(path, score):
     except Exception as err:
         print('[ERROR]: ошибка сохранения счета: ', err)
 
-
+# сохранение содержимого директории в файл
 def save_listdir(path, lst, cur_dir):
     try:
         folders = []
