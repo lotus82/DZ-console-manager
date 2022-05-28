@@ -1,3 +1,7 @@
+import os
+from saving import uploader
+from saving import downloader
+
 # пополнение счета
 def score_up():
     global score
@@ -34,7 +38,9 @@ def history_buy():
 
 # выход из программы
 def close_app():
-    global opened
+    global opened, history
+    uploader.save_history(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'history.csv'), history)
+    uploader.save_score(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'score.txt'), score)
     opened = False
     print('До свидания')
 
@@ -44,6 +50,9 @@ history = []
 
 def start_bank():
     global opened, score, history
+    history = downloader.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'history.csv'))
+    score = downloader.read_txt(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'score.txt'))
+    opened = True
     while opened:
         print('='*8 + 'БАНК МЕНЮ' + '='*8)
         print('1. пополнение счета')

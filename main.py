@@ -6,6 +6,8 @@ from uuid import getnode as get_mac
 import platform
 import victorina.victorina as vic
 import bank.bank as b
+from saving import uploader
+
 
 IS_ACTIVE = True
 OWNER = "Дмитрий Сухов"
@@ -15,19 +17,21 @@ menu_dict = {
     '2':'Удалить (файл/папку)',
     '3':'Копировать (файл/папку)',
     '4':'Просмотр содержимого рабочей директории',
-    '5':'Посмотреть только папки',
-    '6':'Посмотреть только файлы',
-    '7':'Просмотр информации об ОС',
-    '8':'Создатель программы',
-    '9':'Играть в викторину',
-    '10':'Мой банковский счет',
-    '11':'Смена рабочей директории',
-    '12':'Выход'
+    '5':'Сохранить содержимое рабочей директории в файл',
+    '6':'Посмотреть только папки',
+    '7':'Посмотреть только файлы',
+    '8':'Просмотр информации об ОС',
+    '9':'Создатель программы',
+    '10':'Играть в викторину',
+    '11':'Мой банковский счет',
+    '12':'Смена рабочей директории',
+    '13':'Выход',
+    '14':''
 }
 
 # Вывод главного меню
 def main_menu():
-    print("="*40 + "МЕНЮ" + "="*40)
+    print("="*50 + "МЕНЮ" + "="*50)
     count = 1
     s = ""
     for k,v in menu_dict.items():
@@ -36,11 +40,11 @@ def main_menu():
             print(s)
             s = ""
         else:
-            s = s + "|| " + k.rjust(2, " ") + " - " + v.ljust(25, " ") + " || "
+            s = s + "|| " + k.rjust(2, " ") + " - " + v.ljust(46, " ") + " || "
         count+=1
-    print("=" * 84)
+    print("=" * 104)
 
-# 1 - Создать папку
+# 1 - Создать  папку
 def create_folder():
     try:
         dir_name = input("Введите имя папки: ")
@@ -92,7 +96,14 @@ def copy_file():
     else:
         print("-" * 84 + "\nТакого файла или папки здесь нет: %s " % inp + "\n" + "-" * 84)
 
-# 4,5,6 - Просмотр содержимого рабочей директории
+# 5 - Сохранение содержимого рабочей директории в файл
+def save_list_dir():
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'listdirectory.txt')
+    lst = os.listdir(CUR_DIR)
+    if uploader.save_listdir(path, lst, CUR_DIR):
+        print('Успешное сохранение содержимого рабочей директории в listdirectory.txt')
+
+# 4,6,7 - Просмотр содержимого рабочей директории
 def list_path(param="all"):
     global CUR_DIR
     try:
@@ -111,7 +122,7 @@ def list_path(param="all"):
     except Exception as err:
         print("Ошибка просмотра содержимого рабочей директории: %s " % CUR_DIR, ":", err)
 
-# 7 - Просмотр информации об ОС
+# 8 - Просмотр информации об ОС
 def info_os():
     try:
         info_dict = {
@@ -127,22 +138,22 @@ def info_os():
     except Exception as err:
         print("Ошибка получения информации: ", err)
 
-# 8 - Создатель программы
+# 9 - Создатель программы
 def info_owner():
     global OWNER
     print("-" * 84)
     print("Создатель программы: ", OWNER)
     print("-" * 84)
 
-# 9 - Играть в викторину
+# 10 - Играть в викторину
 def game():
     vic.start_game()
 
-# 10 - Мой банковский счет
+# 11 - Мой банковский счет
 def bank():
     b.start_bank()
 
-# 11 - Смена рабочей директории
+# 12 - Смена рабочей директории
 def change_path():
     global CUR_DIR
     new_path = input("Сменить рабочую директорию. Введите новый путь: ")
@@ -152,9 +163,9 @@ def change_path():
     except Exception as err:
         print("Ошибка смены рабочей директории на : %s" % new_path, ":", err)
 
-# 12 - Выход
+# 13 - Выход
 def close_app():
-    global IS_ACTIVE
+    global IS_ACTIVE, history
     IS_ACTIVE = False
 
 # Запуск приложения
@@ -172,20 +183,22 @@ def run_app():
         elif choice == '4':
             list_path()
         elif choice == '5':
-            list_path("folders")
+            save_list_dir()
         elif choice == '6':
-            list_path("files")
+            list_path("folders")
         elif choice == '7':
-            info_os()
+            list_path("files")
         elif choice == '8':
-            info_owner()
+            info_os()
         elif choice == '9':
-            game()
+            info_owner()
         elif choice == '10':
-            bank()
+            game()
         elif choice == '11':
-            change_path()
+            bank()
         elif choice == '12':
+            change_path()
+        elif choice == '13':
             close_app()
         else:
             print('Неверный пункт меню')
