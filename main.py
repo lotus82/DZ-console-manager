@@ -29,6 +29,15 @@ menu_dict = {
     '14':''
 }
 
+# декоратор для добавления рамки
+def add_frame(func):
+    def wrap(param):
+        print("+" * 84)
+        result = func(param)
+        print("+" * 84)
+        return result
+    return wrap
+
 # Вывод главного меню
 def main_menu():
     print("="*50 + "МЕНЮ" + "="*50)
@@ -104,11 +113,11 @@ def save_list_dir():
         print('Успешное сохранение содержимого рабочей директории в listdirectory.txt')
 
 # 4,6,7 - Просмотр содержимого рабочей директории
-def list_path(param="all"):
+@add_frame
+def list_path(param):
     global CUR_DIR
     try:
         content = os.listdir(CUR_DIR)
-        print("-" * 84)
         for item in content:
             if param == "files":
                 if os.path.isfile(os.path.join(CUR_DIR,item)):
@@ -118,11 +127,11 @@ def list_path(param="all"):
                     print(item)
             if param == "all":
                 print(item)
-        print("-" * 84)
     except Exception as err:
         print("Ошибка просмотра содержимого рабочей директории: %s " % CUR_DIR, ":", err)
 
 # 8 - Просмотр информации об ОС
+@add_frame
 def info_os():
     try:
         info_dict = {
@@ -131,19 +140,16 @@ def info_os():
             "MAC адрес" : get_mac(),
             "Название операционной системы" : platform.uname()
         }
-        print("-" * 84 )
         for k,v in info_dict.items():
             print(k + " --> ", v)
-        print("-" * 84)
     except Exception as err:
         print("Ошибка получения информации: ", err)
 
 # 9 - Создатель программы
+@add_frame
 def info_owner():
     global OWNER
-    print("-" * 84)
     print("Создатель программы: ", OWNER)
-    print("-" * 84)
 
 # 10 - Играть в викторину
 def game():
@@ -181,7 +187,7 @@ def run_app():
         elif choice == '3':
             copy_file()
         elif choice == '4':
-            list_path()
+            list_path("all")
         elif choice == '5':
             save_list_dir()
         elif choice == '6':

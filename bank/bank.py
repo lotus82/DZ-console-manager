@@ -61,13 +61,4 @@ def start_bank():
         print('4. выход')
         print('=' * 25)
         choice = input('Выберите пункт меню: ')
-        if choice == '1':
-            score_up()
-        elif choice == '2':
-            buy()
-        elif choice == '3':
-            history_buy()
-        elif choice == '4':
-            close_app()
-        else:
-            print('Неверный пункт меню')
+        score_up() if choice == '1' else buy() if choice == '2' else history_buy() if choice == '3' else close_app() if choice == '4' else print('Неверный пункт меню')

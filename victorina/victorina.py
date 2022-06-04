@@ -64,8 +64,5 @@ def start_game():
                 correct +=1
         print("Количество верных ответов:", str(correct), "\nКоличество неверных ответов:", str(incorrect))
         correct = incorrect = 0
-        if input("Хотите еще сыграть ('да'/'нет')?") in ("да", "Да", "ДА", "yes", "Yes", "YES"):
-            game = True
-        else:
-            game = False
+        game = True if input("Хотите еще сыграть ('да'/'нет')?") in ("да", "Да", "ДА", "yes", "Yes", "YES") else False
     print("До свидания!")
