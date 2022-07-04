@@ -5,6 +5,7 @@ import socket
 from uuid import getnode as get_mac
 import platform
 import victorina.victorina as vic
+import loto.loto as l
 import bank.bank as b
 from saving import uploader
 
@@ -23,10 +24,10 @@ menu_dict = {
     '8':'Просмотр информации об ОС',
     '9':'Создатель программы',
     '10':'Играть в викторину',
-    '11':'Мой банковский счет',
-    '12':'Смена рабочей директории',
-    '13':'Выход',
-    '14':''
+    '11':'Играть в лото',
+    '12':'Мой банковский счет',
+    '13':'Смена рабочей директории',
+    '14':'Выход'
 }
 
 # декоратор для добавления рамки
@@ -155,11 +156,15 @@ def info_owner():
 def game():
     vic.start_game()
 
-# 11 - Мой банковский счет
+# 11 - Играть в лото
+def loto():
+    l.start_loto()
+
+# 12 - Мой банковский счет
 def bank():
     b.start_bank()
 
-# 12 - Смена рабочей директории
+# 13 - Смена рабочей директории
 def change_path():
     global CUR_DIR
     new_path = input("Сменить рабочую директорию. Введите новый путь: ")
@@ -169,7 +174,7 @@ def change_path():
     except Exception as err:
         print("Ошибка смены рабочей директории на : %s" % new_path, ":", err)
 
-# 13 - Выход
+# 14 - Выход
 def close_app():
     global IS_ACTIVE, history
     IS_ACTIVE = False
@@ -201,10 +206,12 @@ def run_app():
         elif choice == '10':
             game()
         elif choice == '11':
-            bank()
+            loto()
         elif choice == '12':
-            change_path()
+            bank()
         elif choice == '13':
+            change_path()
+        elif choice == '14':
             close_app()
         else:
             print('Неверный пункт меню')
