@@ -64,7 +64,6 @@ class Card():
                 str_matrix += ('| ' + str(matrix[i][j]).rjust(2, ' ') + ' ')
             if i == self.count_rows - 1:
                 str_matrix += '|'
-
         return str_matrix
 
     def update_matrix(self, barrel):
@@ -77,5 +76,6 @@ class Card():
         count_cross = 0
         for i in range(len(self.matrix)):
             count_cross += self.matrix[i].count('--')
+        self.crossout += count_cross
         if count_cross == self.count_nums_in_card:
             self.full = True
