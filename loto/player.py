@@ -1,5 +1,6 @@
 from loto.card import Card
 import time
+import collections
 
 class Player():
     '''
@@ -22,6 +23,17 @@ class Player():
         self.card = Card()
         self.lost = False
 
+    # Магические методы
+    def __str__(self):
+        return f'Имя: {self.name}, Тип: {self.owner}'
+
+    def __eq__(self, other):
+        return self.owner == other.owner and self.name == other.name and self.lost == other.lost and self.card == other.card
+
+    def __ne__(self, other):
+        return not (self.owner == other.owner and self.name == other.name and self.lost == other.lost and self.card == other.card)
+
+    # -------------------
     def cross_number(self, barrel):
         self.card.update_matrix(barrel)
         print('-'*46 + '\nИгрок ' + self.name + ' зачеркнул число\n' + '-'*46)
