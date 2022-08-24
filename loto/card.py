@@ -1,4 +1,5 @@
 import random
+import collections
 
 class Card():
     '''
@@ -23,9 +24,24 @@ class Card():
         self.count_nums_in_card = count_nums_in_row * count_rows
         self.crossout = 0
         self.matrix = self.get_matrix()
-        self.str_card = self.get_str_matrix(self.matrix)
+        self.str_card = self.to_str()
         self.full = False
 
+    # Магические методы
+    def __str__(self):
+        return self.str_card
+
+    def __eq__(self, other):
+        first_set = set(map(tuple, self.matrix))
+        secnd_set = set(map(tuple, other.matrix))
+        return first_set == secnd_set
+
+    def __ne__(self, other):
+        first_set = set(map(tuple, self.matrix))
+        secnd_set = set(map(tuple, other.matrix))
+        return first_set != secnd_set
+
+    #-------------------
     def get_numbers(self, count_num, begin_num, end_num):
         if ((end_num - begin_num) + 1) > count_num:
             card_numbers = []
@@ -55,13 +71,13 @@ class Card():
                     k += 1
         return matrix
 
-    def get_str_matrix(self, matrix):
+    def to_str(self):
         str_matrix = ''
         for i in range(self.count_rows):
             if i > 0:
                 str_matrix += '|\n'
             for j in range(self.count_cols):
-                str_matrix += ('| ' + str(matrix[i][j]).rjust(2, ' ') + ' ')
+                str_matrix += ('| ' + str(self.matrix[i][j]).rjust(2, ' ') + ' ')
             if i == self.count_rows - 1:
                 str_matrix += '|'
         return str_matrix
@@ -71,7 +87,7 @@ class Card():
             if barrel in self.matrix[i]:
                 ind = self.matrix[i].index(barrel)
                 self.matrix[i][ind] = '--'
-                self.str_card = self.get_str_matrix(self.matrix)
+                self.str_card = str(self.matrix)
                 break
         count_cross = 0
         for i in range(len(self.matrix)):
@@ -79,3 +95,4 @@ class Card():
         self.crossout += count_cross
         if count_cross == self.count_nums_in_card:
             self.full = True
+

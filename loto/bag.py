@@ -1,4 +1,5 @@
 import random
+import collections
 
 class Bag():
     '''
@@ -11,6 +12,17 @@ class Bag():
         self.count = 90
         self.barrels = self.full_barrels()
 
+    # Магические методы
+    def __str__(self):
+        return f'Мешок | {" | ".join(map(str, self.barrels))}'
+
+    def __eq__(self, other):
+        return collections.Counter(self.barrels) == collections.Counter(other.barrels)
+
+    def __ne__(self, other):
+        return collections.Counter(self.barrels) != collections.Counter(other.barrels)
+
+    # -------------------
     def full_barrels(self):
         barrels = [i for i in range(1, 91, 1)]
         return barrels
